@@ -1,0 +1,99 @@
+service: kata-serverless
+
+frameworkVersion: '2'
+
+custom:
+  tableName: "films-${self:provider.stage}"
+  documentation: ${file(serverless.doc.yml):documentation}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  region: us-east-1
+  stage: dev
+  stackName: tata-${self:service}-${sls:stage}
+  apiName: tata-${self:service}-${sls:stage}
+  #profile: serverless
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["FilmsDynamoDBTable", "Arn"] }
+  environment:
+    FILM_TABLE: ${self:custom.tableName}
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-openapi-documentation
+
+functions:
+  getFilm:
+    handler: dist/src/lambdas/GetFilm.handler
+    layers:
+      - { Ref: CommonLambdaLayer }
+    name: ${sls:stage}-get-film
+    description: Get film instance
+    events:
+      - http:
+          method: GET
+          path: /api/films/{id}
+          documentation: ${file(serverless.doc.yml):endpoints.GetFilm}
+    package:
+      individually: true
+      patterns:
+        - '!./**'
+        - 'dist/**'
+        - '!dist/src/lambdas'
+        - 'dist/src/lambdas/GetFilm.js'
+  createFilm:
+    handler: dist/src/lambdas/CreateFilm.handler
+    layers:
+      - { Ref: CommonLambdaLayer }
+    name: ${sls:stage}-create-film
+    description: Create film instance
+    events:
+      - http:
+          method: POST
+          path: /api/films
+          documentation: ${file(serverless.doc.yml):endpoints.CreateFilm}
+    package:
+      individually: true
+      patterns:
+        - '!./**'
+        - 'dist/**'
+        - '!dist/src/lambdas'
+        - 'dist/src/lambdas/CreateFilm.js'
+
+layers:
+  Common:
+    path: dependencies
+    name: Common
+    description: contains common node dependencies
+    compatibleRuntimes:
+      - nodejs14.x
+    licenseInfo: MIT
+    retain: false
+
+resources:
+  Resources:
+    FilmsDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}

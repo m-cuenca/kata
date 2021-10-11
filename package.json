@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "KataServerless": "file:dependencies\\nodejs"
+  }
+}

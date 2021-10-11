@@ -1,0 +1,26 @@
+documentation:
+  version: '1'
+  title: 'Tata API'
+  description: 'This is my API Kata Tata'
+  models: {}
+
+endpoints:
+  GetFilm:
+    summary: "Get Film"
+    description: "Get film instance"
+    requestModels:
+      application/json: "PutDocumentRequest"
+    pathParams:
+      - name: "id"
+        description: "The id for a film to get"
+        schema:
+          type: "string"
+          pattern: "^[0-9]+$"
+  CreateFilm:
+    summary: "Crate Film"
+    description: "Create film instance"
+    requestModels:
+      application/json: "PutDocumentRequest"
+    requestBody:
+      title: "A user information object"
+      description: "A user information object"

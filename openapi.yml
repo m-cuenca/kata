@@ -1,0 +1,21 @@
+openapi: 3.0.0
+components:
+  schemas: {}
+  securitySchemes: {}
+info:
+  title: Tata API
+  description: This is my API Kata Tata
+  version: '1'
+paths:
+  '//api/films/{id}':
+    get:
+      operationId: getFilm
+      summary: Get Film
+      description: Get film instance
+      responses: {}
+  //api/films:
+    post:
+      operationId: createFilm
+      summary: Crate Film
+      description: Create film instance
+      responses: {}

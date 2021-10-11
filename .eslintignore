@@ -1,0 +1,5 @@
+node_modules
+
+/node_modules
+/dependencies/nodejs/node_modules
+dist
