@@ -26,4 +26,12 @@ export class FilmController {
         return response;
     }
 
+    getFilmStarWars = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+        const id: string = String(event.pathParameters?.id);
+
+        const response: APIGatewayProxyResult = await this.filmService.getFilmStarWars(id);
+
+        return response;
+    }
+
 }

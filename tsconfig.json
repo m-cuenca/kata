@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2017",
+        "target": "es2019",
         "module": "commonjs",
         "outDir": "dist",
         "rootDir":"./",
@@ -10,12 +10,12 @@
         "baseUrl":".",
         "paths":{
             "*":[
-                "dependencies/nodejs/node_modules/@types/*",
-                "dependencies/nodejs/node_modules/*"
+                "node_modules/@types/*",
+                "node_modules/*"
             ]
         },
         "typeRoots":[
-            "dependencies/nodejs/node_modules/@types"
+            "node_modules/@types"
         ],
         "esModuleInterop": true,
         "experimentalDecorators":true,
@@ -24,10 +24,11 @@
         "forceConsistentCasingInFileNames":true
     },
     "include": [
-        "src/**/*.ts",
-        "tests/**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude":[
-        "node_modules"
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.test.ts"
     ]
 }

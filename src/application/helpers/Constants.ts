@@ -4,4 +4,5 @@ export abstract class Constants {
   static duration: number = 120
   static region: string = 'us-west-1'
   static path: string = '/myTataLambda/'
+  static baseUrl: string = 'https://swapi.py4e.com/api/'
 }

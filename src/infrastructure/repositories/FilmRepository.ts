@@ -12,19 +12,19 @@ export class FilmRepository implements IFilmRepository {
 
   constructor (
     @inject('IConnectionOther') private readonly connectionOther: IConnectionOther) {
-      const { FILM_TABLE } = process.env;
+    const { FILM_TABLE } = process.env;
 
-      this.FILM_TABLE = FILM_TABLE ?? '';
+    this.FILM_TABLE = FILM_TABLE ?? '';
   }
 
   getFilm = async (id: string): Promise<[ServiceStatus, string, Film]> => {
-      let entity: Film = {
-        title: '',
-        director: '',
-        episode_id: 0,
-        opening_crawl: '',
-        producer: '',
-        release_date: ''
+    let entity: Film = {
+      title: '',
+      director: '',
+      episode_id: 0,
+      opening_crawl: '',
+      producer: '',
+      release_date: ''
     };
 
     try {

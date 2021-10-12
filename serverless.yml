@@ -6,6 +6,11 @@ custom:
   tableName: "films-${self:provider.stage}"
   documentation: ${file(serverless.doc.yml):documentation}
 
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-openapi-documentation
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -28,11 +33,7 @@ provider:
         - { "Fn::GetAtt": ["FilmsDynamoDBTable", "Arn"] }
   environment:
     FILM_TABLE: ${self:custom.tableName}
-
-plugins:
-  - serverless-offline
-  - serverless-dynamodb-local
-  - serverless-openapi-documentation
+    # NODE_PATH: "./:/opt/node_modules"
 
 functions:
   getFilm:
@@ -45,7 +46,7 @@ functions:
       - http:
           method: GET
           path: /api/films/{id}
-          documentation: ${file(serverless.doc.yml):endpoints.GetFilm}
+          #documentation: ${file(serverless.doc.yml):GetFilm}
     package:
       individually: true
       patterns:
@@ -53,6 +54,24 @@ functions:
         - 'dist/**'
         - '!dist/src/lambdas'
         - 'dist/src/lambdas/GetFilm.js'
+  getFilmStarWars:
+    handler: dist/src/lambdas/getFilmStarWars.handler
+    layers:
+      - { Ref: CommonLambdaLayer }
+    name: ${sls:stage}-get-film-star-wars
+    description: Get film star wars instance
+    events:
+      - http:
+          method: GET
+          path: /api/films-star-wars/{id}
+          #documentation: ${file(serverless.doc.yml):GetFilm}
+    package:
+      individually: true
+      patterns:
+        - '!./**'
+        - 'dist/**'
+        - '!dist/src/lambdas'
+        - 'dist/src/lambdas/getFilmStarWars.js'
   createFilm:
     handler: dist/src/lambdas/CreateFilm.handler
     layers:
@@ -63,7 +82,7 @@ functions:
       - http:
           method: POST
           path: /api/films
-          documentation: ${file(serverless.doc.yml):endpoints.CreateFilm}
+          #documentation: ${file(serverless.doc.yml):CreateFilm}
     package:
       individually: true
       patterns:

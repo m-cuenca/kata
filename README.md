@@ -9,6 +9,8 @@
  - install dependencies
 
 ```
+    npm install
+    y
     npm install --prefix .\dependencies\nodejs\
 ```
 
@@ -21,11 +23,13 @@
 - Deploy to aws
 
 ```
-    .\dependencies\nodejs\node_modules\.bin\serverless deploy - npm run deploy
+    serverless deploy
+    o
+    npm run deploy
 ```
 
 - deploy locally
 
 ```
-    .\dependencies\nodejs\node_modules\.bin\serverless offline
+    serverless offline
 ```

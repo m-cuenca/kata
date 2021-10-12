@@ -2,6 +2,7 @@
 
 coverage
 node_modules
+jspm_packages
 
 /node_modules
 /dependencies/nodejs/node_modules

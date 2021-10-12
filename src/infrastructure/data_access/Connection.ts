@@ -32,17 +32,21 @@ export class Connection implements IConnectionOther {
       }
     }
 
-    return await this.docClient.get(input, (error, result) => {
-      if (error) {
-        return { is_error: true, message: 'Retrieving film' };
-      }
+    try {
+      return await this.docClient.get(input, (error, result) => {
+        if (error) {
+          return { is_error: true, message: 'Retrieving film' };
+        }
 
-      if (!result.Item) {
-        return { is_error: true, message: `Film with id: ${id} not found` };
-      }
+        if (!result.Item) {
+          return { is_error: true, message: `Film with id: ${id} not found` };
+        }
 
-      return { is_error: false, entity: result.Item };
-    }).promise()
+        return { is_error: false, entity: result.Item };
+      }).promise()
+    } catch(error) {
+      return { is_error: true, message: error };
+    }
   }
 
   put = async (tableName: string, item: { [key: string]: any }): Promise<any> => {
